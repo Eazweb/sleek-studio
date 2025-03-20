@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react'
 import React from 'react'
 
-export const SearchBUtton = () => {
+export const SearchButton = () => {
   return (
     <div>
         <Search/>
@@ -9,4 +9,4 @@ export const SearchBUtton = () => {
   )
 }
 
-export default SearchBUtton
+export default SearchButton
