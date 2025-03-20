@@ -1,22 +1,42 @@
-import Image from 'next/image'
-import React from 'react'
-import { NavigationMenuDemo } from './NavigationMenuDemo'
-import RightSideNavbar from './RightSideNavbar'
-import SmallDisplayButton from './SmallDisplayButton'
+'use client'
+import React, { useState, useEffect } from 'react';
+import SmallDisplayButton from './SmallDisplayButton';
+import RightSideNavbar from './RightSideNavbar';
+import { NavigationMenuDemo } from './NavigationMenuDemo';
 
-export const Navbar = () => {
+const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      if (offset > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const navbarClasses = scrolled ? 'navbar-scrolled' : 'navbar-initial';
+
   return (
-    <div className='w-full z-50 px-6 flex justify-between items-center py-5 md:py-0'>
-        <Image src="https://www.vistaprint.com/hub/types-of-logos" width={100} height={100} alt="logo" className='hidden md:flex'/>
-        <div className='flex md:hidden'>
-            <SmallDisplayButton/>
-        </div>
-        <div className='hidden md:flex'>
-            <NavigationMenuDemo/>
-        </div>
-        <RightSideNavbar/>
+    <div className={`w-full z-30 px-6 flex sticky top-0 justify-between items-center py-5 ${navbarClasses}`}>
+      <h1 className='text-4xl hidden md:flex'>Sleek Studio</h1>
+      <div className='flex md:hidden'>
+        <SmallDisplayButton />
+      </div>
+      <div className='hidden md:flex'>
+        <NavigationMenuDemo />
+      </div>
+      <RightSideNavbar />
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -32,7 +32,9 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
+  --color-primary: #222a41;
+  --color-primary-light: #3d476b; /* Optional lighter shade */
+  --color-primary-dark: #15192a; 
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -119,4 +121,16 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.navbar-initial {
+  background-color: var(--color-primary);
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-scrolled {
+  background-color: white;
+  color: black;
+  transition: background-color 0.3s, color 0.3s;
 }

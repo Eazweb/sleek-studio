@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth/SessionProvider";
+import Navbar from "@/components/Header/Navbar";
+import { ScrollProgress } from "@/components/magicui/scroll-progress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +27,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
-
+      <AuthProvider>   
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+      <ScrollProgress className="top-0" />
+        <Navbar/>
         {children}
       </body>
         </AuthProvider>

@@ -20,8 +20,6 @@ export default function AuthButton() {
   }
 
   if (session && session.user) {
-    // Debug to console to verify what's coming through
-    console.log("Session user:", session.user);
     
     return (
       <button
