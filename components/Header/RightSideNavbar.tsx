@@ -2,7 +2,6 @@ import { HeartIcon, ShoppingCartIcon } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import AuthButton from '../auth/AuthButton'
-import SearchButton from './Searchbutton'
 
 export const RightSideNavbar = () => {
   return (
@@ -13,7 +12,6 @@ export const RightSideNavbar = () => {
         <Link href='/wishlist' className='hidden md:flex'>
             <HeartIcon/>
         </Link>
-          <SearchButton/>
         <AuthButton/>
     </div>
   )
