@@ -3,7 +3,7 @@ import Navbar from '@/components/Header/Navbar'
 import React from 'react'
 import { VelocityScroll } from '@/components/magicui/scroll-based-velocity'
 
-export const page = () => {
+export const Page = () => {
   return (
     <div className='w-full max-w-[2400px]'>
       <div className='pb-8'>
@@ -13,4 +13,4 @@ export const page = () => {
     </div>
   )
 }
-export default page
+export default Page
