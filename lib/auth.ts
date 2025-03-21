@@ -9,7 +9,7 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
   return {
     ...PrismaAdapter(prisma),
     // Override createUser to add role with default value
-    createUser: async (data) => {
+    createUser: async (data:any) => {
       const user = await prisma.user.create({
         data: {
           ...data,
