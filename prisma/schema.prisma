@@ -1,7 +1,13 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-
+generator client {
+  provider        = "prisma-client-js"
+  // Setup for Vercel deployments
+  binaryTargets   = ["native", "rhel-openssl-1.0.x"]
+  output          = "../node_modules/.prisma/client"
+  // Remove previewFeatures for MongoDB which doesn't need referential integrity
+}
 
 datasource db {
   provider = "mongodb"

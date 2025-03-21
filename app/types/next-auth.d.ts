@@ -1,6 +1,8 @@
 import NextAuth, { DefaultSession } from "next-auth"
 import { JWT } from "next-auth/jwt"
-import { Role } from "@prisma/client"
+
+// Define the Role type locally to avoid dependency on @prisma/client
+type Role = "USER" | "ADMIN"
 
 declare module "next-auth" {
   /**

@@ -1,6 +1,12 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Adapter } from "next-auth/adapters";
+
+// Define the Role enum locally to avoid the import error
+enum Role {
+  USER = "USER",
+  ADMIN = "ADMIN"
+}
 
 /**
  * Extended PrismaAdapter to handle custom fields like role
@@ -13,7 +19,7 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
       const user = await prisma.user.create({
         data: {
           ...data,
-          role: Role.USER, // Set default role when creating a user
+          role: "USER", // Set default role when creating a user
         },
       });
       return user;
