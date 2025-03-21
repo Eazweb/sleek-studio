@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  role           Role      @default(USER)
+
+  accounts       Account[]
+  addresses      Address[]
+  orders         Order[]
+  reviews        Review[]
+  wishlist       Product[] @relation(fields: [wishlistIds], references: [id])
+  wishlistIds    String[]  @db.ObjectId
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Address {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String  @db.ObjectId
+  name         String
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  state        String
+  postalCode   String
+  country      String
+  isDefault    Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String
+  slug           String   @unique
+  price          Float
+  salePrice      Float?
+  inventory      Int      @default(0)
+  images         String[]
+  category       String   // Changed from categoryId to string field
+  tags           String[] @default([])
+  sizes          String[]
+  customisations Json?    // Added optional customisations
+  timesSold      Int      @default(0) // Added times sold counter
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  orderItems     OrderItem[]
+  reviews        Review[]
+  wishedBy       User[]     @relation(fields: [wishedByIds], references: [id])
+  wishedByIds    String[]   @db.ObjectId
+}
+
+model Order {
+  id                String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String      @db.ObjectId
+  status            OrderStatus @default(PENDING)
+  total             Float
+  subtotal          Float
+  tax               Float
+  shipping          Float
+  shippingAddressId String      @db.ObjectId
+  paymentIntent     String?
+  paymentStatus     String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items             OrderItem[]
+}
+
+model OrderItem {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId    String   @db.ObjectId
+  productId  String   @db.ObjectId
+  quantity   Int
+  price      Float
+  size       String
+  totalPrice Float
+  createdAt  DateTime @default(now())
+
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model PageContent {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  largePoster String        // URL for large poster image
+  smallPoster String?       // URL for small poster image (optional)
+  link        String        // Link destination when clicked
+  category    ContentType   // Which page this content belongs to (home, men, women, children)
+  title       String?       // Optional title text for the content
+  description String?       // Optional description text
+  isActive    Boolean       @default(true)
+  priority    Int           @default(0) // For ordering content (higher numbers appear first)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum ContentType {
+  HOME
+  MEN
+  WOMEN
+  CHILDREN
+} 
