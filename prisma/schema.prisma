@@ -3,6 +3,9 @@
 
 generator client {
   provider = "prisma-client-js"
+  // Setup for Vercel deployments
+  previewFeatures = ["referentialIntegrity"]
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
