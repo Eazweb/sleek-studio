@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Skeleton } from "../ui/skeleton";
@@ -20,13 +20,8 @@ export default function AuthButton() {
   }
 
   if (session && session.user) {
-    
     return (
-      <button
-        onClick={() => signOut()}
-        className="flex items-center justify-center rounded-full overflow-hidden w-8 h-8 focus:outline-none border border-gray-200"
-        title="Sign Out"
-      >
+      <div className="flex items-center justify-center rounded-full overflow-hidden w-8 h-8 focus:outline-none border border-gray-200">
         {session.user.image && !imageError ? (
           <img
             src={session.user.image}
@@ -39,17 +34,14 @@ export default function AuthButton() {
             {session.user.name ? session.user.name.charAt(0).toUpperCase() : "U"}
           </div>
         )}
-      </button>
+      </div>
     );
   }
 
+  // Return just the user icon for non-authenticated users
   return (
-    <button
-      onClick={() => signIn("google")}
-      className="flex items-center justify-center rounded-full p-1 w-8 h-8 bg-gray-200 hover:bg-gray-300 focus:outline-none"
-      title="Sign In with Google"
-    >
+    <div className="flex items-center justify-center rounded-full p-1 w-8 h-8 bg-gray-200">
       <User size={20} className="text-gray-700" />
-    </button>
+    </div>
   );
 }
