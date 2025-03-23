@@ -1,4 +1,5 @@
 import { CarouselDemo } from '@/components/Hero/Carousel'
+import CategorySection from '@/components/Hero/CategorySection'
 import { Reviews } from '@/components/Hero/Reviews'
 import StylishFontPage from '@/components/Hero/StylishFontPage'
 import { VelocityScroll } from '@/components/magicui/scroll-based-velocity'
@@ -8,6 +9,7 @@ const Page = () => {
     <div className='w-full max-w-[2400px]'>
        <CarouselDemo/>
       <VelocityScroll>Sleek Studio</VelocityScroll>
+      <CategorySection/>
       <StylishFontPage/>
       <Reviews/>
     </div>

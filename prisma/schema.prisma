@@ -75,6 +75,8 @@ model Product {
   price          Float
   salePrice      Float?
   inventory      Int      @default(0)
+  noBgImage      String
+  modelImage     String
   images         String[]
   category       String   // Changed from categoryId to string field
   tags           String[] @default([])
