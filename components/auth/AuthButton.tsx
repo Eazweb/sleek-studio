@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { User } from "lucide-react";
+import { Car, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Skeleton } from "../ui/skeleton";
 
@@ -40,8 +40,8 @@ export default function AuthButton() {
 
   // Return just the user icon for non-authenticated users
   return (
-    <div className="flex items-center justify-center rounded-full p-1 w-8 h-8 bg-gray-200">
-      <User size={20} className="text-gray-700" />
+    <div className="flex items-center justify-center cursor-pointer">
+      <User />
     </div>
   );
 }

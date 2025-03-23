@@ -82,6 +82,7 @@ model Product {
   customisations Json?    // Added optional customisations
   timesSold      Int      @default(0) // Added times sold counter
   isActive       Boolean  @default(true)
+  homePageFeatured Boolean @default(false) // Products to be featured on homepage
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 

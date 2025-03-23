@@ -4,6 +4,7 @@ import "./globals.css";
 import AuthProvider from "@/components/auth/SessionProvider";
 import Navbar from "@/components/Header/Navbar";
 import { ScrollProgress } from "@/components/magicui/scroll-progress";
+import SmoothScroll from "@/lib/SmoothScroll";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-      <ScrollProgress className="top-0" />
-        <Navbar/>
-        {children}
+          <SmoothScroll>
+           <ScrollProgress className="top-0" />
+           <Navbar/>
+           {children}
+          </SmoothScroll>
       </body>
         </AuthProvider>
     </html>
