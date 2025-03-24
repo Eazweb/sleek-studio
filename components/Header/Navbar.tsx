@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import SmallDisplayButton from './SmallDisplayButton';
+import SmallDisplayButton from './MobileMenu/SmallDisplayButton';
 import RightSideNavbar from './RightSideNavbar';
 import { NavigationMenuDemo } from './NavigationMenuDemo';
 
@@ -26,7 +26,7 @@ const Navbar = () => {
   const navbarClasses = scrolled ? 'navbar-scrolled' : 'navbar-initial';
 
   return (
-    <div className={`w-full z-30 px-6 flex sticky top-0 justify-between items-center py-5 ${navbarClasses}`}>
+    <div className={`w-full z-30 px-3 md:px-6 flex sticky top-0 justify-between items-center py-5 ${navbarClasses}`}>
       <h1 className='text-4xl hidden md:flex'>Sleek Studio</h1>
       <div className='flex md:hidden'>
         <SmallDisplayButton />

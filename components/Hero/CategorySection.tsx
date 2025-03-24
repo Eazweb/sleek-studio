@@ -25,9 +25,7 @@ const categories = [
 
 export const CategorySection = () => {
   return (
-    <div className="py-12 px-4">
-      <h2 className="text-2xl font-bold mb-8 text-center">Shop by Category</h2>
-      
+    <div className="py-12 px-4 ">
       {/* Container for categories */}
       <div className="relative">
         {/* Horizontal scrolling container for mobile */}
@@ -40,7 +38,7 @@ export const CategorySection = () => {
         </div>
         
         {/* Desktop layout with space-between */}
-        <div className="hidden md:flex justify-between gap-8">
+        <div className="hidden md:flex justify-between gap-8 px-10">
           {categories.map((category) => (
             <CategoryBox key={category.id} category={category} className="w-1/3" />
           ))}
@@ -69,7 +67,7 @@ const CategoryBox = ({ category, className = "" }: CategoryBoxProps) => {
     >
       <div className="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
         {/* Image container with 2:1 aspect ratio */}
-        <div className="relative aspect-[2/1]">
+        <div className="relative aspect-square">
           <Image
             src={category.image}
             alt={category.title}
@@ -80,12 +78,6 @@ const CategoryBox = ({ category, className = "" }: CategoryBoxProps) => {
           <div className="absolute inset-0 flex items-center justify-center bg-black/30">
             <h3 className="font-bold text-xl text-white">{category.title}</h3>
           </div>
-        </div>
-        {/* View more text at bottom left */}
-        <div className="p-3 flex justify-start">
-          <span className="text-sm font-medium text-gray-700 hover:text-gray-900 group-hover:underline">
-            View more
-          </span>
         </div>
       </div>
     </Link>

@@ -12,7 +12,7 @@ import {
 export function CarouselDemo() {
   return (
     <Carousel 
-      className="w-full px-5 mx-auto bg-[var(--color-primary)] py-6" 
+      className="w-full px-5 mx-auto bg-[var(--color-primary)] pb-6" 
       aspectRatio="responsive" 
       loop={true}
       autoPlay={true}

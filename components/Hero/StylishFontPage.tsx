@@ -11,28 +11,42 @@ const posts = [
   {
     id: 1,
     username: "anamariaburs",
-    image: "/placeholder.svg?height=600&width=600",
+    image: "/instaposts/1.jpg",
     description: "Megan Sheep Jumper",
     postLink: "/products/megan-sheep-jumper",
   },
   {
     id: 2,
     username: "sophiestyles",
-    image: "/placeholder.svg?height=600&width=600",
+    image: "/instaposts/2.jpg",
     description: "Alpine Wool Cardigan",
     postLink: "/products/alpine-wool-cardigan",
   },
   {
     id: 3,
     username: "fashionforward",
-    image: "/placeholder.svg?height=600&width=600",
+    image: "/instaposts/3.jpg",
     description: "Nordic Pattern Sweater",
     postLink: "/products/nordic-pattern-sweater",
   },
   {
     id: 4,
     username: "winterwardrobe",
-    image: "/placeholder.svg?height=600&width=600",
+    image: "/instaposts/4.jpg",
+    description: "Merino Blend Pullover",
+    postLink: "/products/merino-blend-pullover",
+  },
+  {
+    id: 5,
+    username: "winterwardrobe",
+    image: "/instaposts/5.jpg",
+    description: "Merino Blend Pullover",
+    postLink: "/products/merino-blend-pullover",
+  },
+  {
+    id: 6,
+    username: "winterwardrobe",
+    image: "/instaposts/6.jpg",
     description: "Merino Blend Pullover",
     postLink: "/products/merino-blend-pullover",
   },
@@ -66,12 +80,12 @@ export default function StylishFontPage() {
       <div className="relative">
         {/* Red text that sits BEHIND the carousel */}
         <div className="absolute inset-0 flex items-center justify-center z-0">
-          <h1 className={` ${stylishFont.className} text-6xl md:text-8xl xl:text-[10rem] font-bold text-red-600`}>Sleek Studio</h1>
+          <h1 className={` ${stylishFont.className} text-5xl sm:text-6xl md:text-8xl lg:text-[8rem] xl:text-[12rem] font-bold text-center text-primary`}>Sleek Studio</h1>
         </div>
 
         {/* Main carousel container - positioned BETWEEN the two text layers */}
         <div
-          className="relative z-10 w-[60%] max-w-[400px]  mx-auto rounded-lg overflow-hidden aspect-square bg-gray-100"
+          className="relative z-10 w-[60%] max-w-[400px]  mx-auto rounded-lg overflow-hidden aspect-[4/5] bg-gray-100"
           
         >
           <Image
@@ -109,7 +123,7 @@ export default function StylishFontPage() {
 
         {/* Lighter text overlay ON TOP of the carousel */}
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <h1 className={`${stylishFont.className} text-6xl md:text-8xl xl:text-[10rem] font-bold text-red-600/20`}>Sleek Studio</h1>
+          <h1 className={`${stylishFont.className} text-5xl sm:text-6xl md:text-8xl lg:text-[8rem] xl:text-[12rem] font-bold text-center text-primary/30`}>Sleek Studio</h1>
         </div>
       </div>
 
