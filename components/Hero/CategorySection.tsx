@@ -5,19 +5,19 @@ import Link from "next/link"
 const categories = [
   {
     id: 1,
-    title: "Knitwear",
+    title: "Men",
     image: "/placeholder.svg?height=300&width=600",
     link: "/category/knitwear"
   },
   {
     id: 2,
-    title: "Outerwear",
+    title: "Women",
     image: "/placeholder.svg?height=300&width=600",
     link: "/category/outerwear"
   },
   {
     id: 3,
-    title: "Accessories",
+    title: "Children",
     image: "/placeholder.svg?height=300&width=600",
     link: "/category/accessories"
   },

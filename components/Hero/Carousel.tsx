@@ -24,7 +24,7 @@ export function CarouselDemo() {
             <div className="p-1">
               <Card>
                 <CardContent className="p-0">
-                  <div className="w-full h-full aspect-[1/2] sm:aspect-[3/1] flex items-center justify-center">
+                  <div className="w-full h-full aspect-[3/5] sm:aspect-[3/1] flex items-center justify-center">
                     <span className="text-4xl font-semibold">{index + 1}</span>
                   </div>
                 </CardContent>

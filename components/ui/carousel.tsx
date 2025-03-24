@@ -223,7 +223,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
         "min-w-0 shrink-0 grow-0 basis-full",
         orientation === "horizontal" ? "pl-4" : "pt-4",
         // Updated aspect ratio styling from 2:1 to 3:1 for large displays
-        aspectRatio === "responsive" && "aspect-[1/2] sm:aspect-[3/1]",
+        aspectRatio === "responsive" && "aspect-[3/5] sm:aspect-[3/1]",
         className
       )}
       {...props}
