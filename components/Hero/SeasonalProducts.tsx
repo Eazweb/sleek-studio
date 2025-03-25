@@ -17,7 +17,7 @@ export function CarouselSize() {
       opts={{
         align: "start",
       }}
-      className="w-[90%] mx-auto "
+      className="w-[90%] mx-auto flex justify-center items-center "
     >
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
@@ -41,18 +41,18 @@ export function CarouselSize() {
 
 const ImageArea=()=>{
     return(
-        <Image src='logo.svg' width={500} height={500} className="aspect-square hidden md:flex" alt="" />
+        <Image src='logo.svg' width={500} height={500} className="aspect-square " alt="" />
     )
 }
 
 export const SeasonalProducts=()=>{
     return (
-        <div className="w-full flex max-h-[80vh] py-5 md:py-8 overflow-hidden justify-between items-center">
-            <div className="w-[40%]">
+        <div className="w-full flex py-5 md:py-8 overflow-hidden  items-center">
+            <div className="w-[45%] hidden md:flex border-[1px] borderl-black aspect-square">
                 <ImageArea/>
             </div>
-            <div className="w-full md:w-[60%] flex justify-center items-center">
-            <CarouselSize/>
+            <div className="mx-auto">
+                <CarouselSize/>
             </div>
         </div>
     )
