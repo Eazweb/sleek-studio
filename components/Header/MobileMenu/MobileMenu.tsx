@@ -15,7 +15,7 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ items }: MobileMenuProps) {
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto mt-8">
       <Accordion type="single" collapsible className="text-xl">
         {items.map((item) => (
           <div key={item.id}>
