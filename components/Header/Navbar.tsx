@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import SmallDisplayButton from './MobileMenu/SmallDisplayButton';
 import RightSideNavbar from './RightSideNavbar';
 import { NavigationMenuDemo } from './NavigationMenuDemo';
+import { usePathname } from "next/navigation";
+
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -24,6 +26,15 @@ const Navbar = () => {
   }, []);
 
   const navbarClasses = scrolled ? 'navbar-scrolled' : 'navbar-initial';
+
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith('/admin');
+  
+  if (isAdminRoute) {
+    return null;
+  }
+  
+  
 
   return (
     <div className={`w-full z-30 px-3 md:px-6 flex sticky top-0 justify-between items-center py-5 ${navbarClasses}`}>

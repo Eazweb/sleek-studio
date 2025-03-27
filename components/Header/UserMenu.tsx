@@ -27,7 +27,7 @@ export default function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="border-none">
+        <button className="border-none cursor-pointer">
           <AuthButton />
         </button>
       </DropdownMenuTrigger>

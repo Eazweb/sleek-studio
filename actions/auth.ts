@@ -8,13 +8,32 @@ import bcrypt from "bcrypt";
  * Get the current logged-in user
  */
 export async function currentUser() {
-  const session = await auth();
-  
-  if (!session?.user?.id) {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.email) {
+      return null;
+    }
+    
+    // Get the full user data from the database using email instead of ID
+    const user = await db.user.findUnique({
+      where: { email: session.user.email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        image: true,
+        createdAt: true,
+        updatedAt: true
+      }
+    });
+    
+    return user;
+  } catch (error) {
+    console.error("Error getting current user:", error);
     return null;
   }
-  
-  return session.user;
 }
 
 /**
@@ -37,7 +56,7 @@ export async function updateProfile(name: string) {
     }
 
     const updatedUser = await db.user.update({
-      where: { id: user.id },
+      where: { email: user.email },
       data: { name },
       select: {
         id: true,
@@ -65,7 +84,7 @@ export async function updatePassword(currentPassword: string, newPassword: strin
 
     // Get user with password
     const dbUser = await db.user.findUnique({
-      where: { id: user.id },
+      where: { email: user.email },
       select: {
         id: true,
         hashedPassword: true,
@@ -91,7 +110,7 @@ export async function updatePassword(currentPassword: string, newPassword: strin
 
     // Update password
     await db.user.update({
-      where: { id: user.id },
+      where: { email: user.email },
       data: { hashedPassword },
     });
 
