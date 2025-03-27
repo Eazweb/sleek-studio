@@ -2,7 +2,7 @@ import OopsMessage from '@/components/Others/OopsMessage';
 import { requireAdmin } from '@/lib/auth-utils';
 import React from 'react'
 
-export const page = async() => {
+ const page = async() => {
   const { isAuthorized, user, errorMessage } = await requireAdmin();
   
   // If not authorized, show the OopsMessage

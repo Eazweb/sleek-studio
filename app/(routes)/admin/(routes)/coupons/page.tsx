@@ -2,7 +2,7 @@ import React from 'react'
 import { requireAdmin } from '@/lib/auth-utils'
 import OopsMessage from '@/components/Others/OopsMessage'
 
-export default async function CouponsPage() {
+ const page = async ()=>{
   const { isAuthorized, user, errorMessage } = await requireAdmin();
   
   // If not authorized, show the OopsMessage
@@ -36,3 +36,5 @@ export default async function CouponsPage() {
     </div>
   )
 }
+
+export default page
