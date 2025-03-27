@@ -1,6 +1,5 @@
 // components/MobileMenu.tsx
 import Link from 'next/link'
-import { MenuItem } from '@/Types/type'
 import { ChevronDown } from 'lucide-react'
 import {
   Accordion,
@@ -8,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
+import { MenuItem } from '@/config/mobilemenu'
 
 interface MobileMenuProps {
   items: MenuItem[]
