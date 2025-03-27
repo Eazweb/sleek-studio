@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet"
 import { Menu } from "lucide-react";
 import MobileMenu from "./MobileMenu";
-import { menuData } from "@/Types/type";
+import { menuData } from "@/config/mobilemenu";
 
 export default function SmallDisplayButton() {
   const [name, setName] = useState("Pedro Duarte");
