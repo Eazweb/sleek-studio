@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-export const page=()=>{
+ const page=()=>{
     return(
         <div className="w-full h-screen flex flex-col justify-center items-center">
             <h1>welcome back Admin!</h1>
