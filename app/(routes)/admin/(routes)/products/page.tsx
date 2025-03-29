@@ -14,12 +14,12 @@ export const metadata: Metadata = {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
     search?: string;
     category?: string;
     status?: string;
-  };
+  }>;
 }) {
   const { isAuthorized, user, errorMessage } = await requireAdmin();
   
@@ -35,10 +35,13 @@ export default async function ProductsPage({
     ) : null;
   }
 
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const search = searchParams.search || "";
-  const category = searchParams.category || "";  // Empty string means no filter in the server actions
-  const status = (searchParams.status || "all") as "active" | "inactive" | "all";
+  // Resolve search params
+  const resolvedSearchParams = await searchParams;
+
+  const page = resolvedSearchParams.page ? parseInt(resolvedSearchParams.page) : 1;
+  const search = resolvedSearchParams.search || "";
+  const category = resolvedSearchParams.category || "";  // Empty string means no filter in the server actions
+  const status = (resolvedSearchParams.status || "all") as "active" | "inactive" | "all";
 
   // Fetch products with pagination and filters
   const { products, totalCount, totalPages, currentPage } = await getAdminProducts({
