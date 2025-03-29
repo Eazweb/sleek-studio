@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 // GET handler for a specific coupon
 export async function GET(
   request: Request,
-  { params }: { params: { couponId: string } }
+  { params }: { params: Promise<{ couponId: string }> }
 ) {
   try {
     // Verify admin access
@@ -14,7 +14,9 @@ export async function GET(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { couponId } = params;
+    // Await params before using them
+    const resolvedParams = await params;
+    const { couponId } = resolvedParams;
 
     if (!couponId) {
       return new NextResponse("Coupon ID is required", { status: 400 });
@@ -59,7 +61,7 @@ export async function GET(
 // PATCH handler to update a coupon
 export async function PATCH(
   request: Request,
-  { params }: { params: { couponId: string } }
+  { params }: { params: Promise<{ couponId: string }> }
 ) {
   try {
     // Verify admin access
@@ -68,7 +70,9 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { couponId } = params;
+    // Await params before using them
+    const resolvedParams = await params;
+    const { couponId } = resolvedParams;
     const body = await request.json();
 
     if (!couponId) {
@@ -120,7 +124,7 @@ export async function PATCH(
 // DELETE handler to delete a coupon
 export async function DELETE(
   request: Request,
-  { params }: { params: { couponId: string } }
+  { params }: { params: Promise<{ couponId: string }> }
 ) {
   try {
     // Verify admin access
@@ -129,7 +133,9 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { couponId } = params;
+    // Await params before using them
+    const resolvedParams = await params;
+    const { couponId } = resolvedParams;
 
     if (!couponId) {
       return new NextResponse("Coupon ID is required", { status: 400 });

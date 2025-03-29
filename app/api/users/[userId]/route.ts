@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 
 export async function GET(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Verify admin access
@@ -13,8 +13,12 @@ export async function GET(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    // Await params before using them
+    const resolvedParams = await params;
+    const userId = resolvedParams.userId;
+
     const user = await db.user.findUnique({
-      where: { id: params.userId },
+      where: { id: userId },
       select: {
         id: true,
         name: true,
@@ -45,7 +49,7 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Verify admin access
@@ -54,6 +58,10 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    // Await params before using them
+    const resolvedParams = await params;
+    const userId = resolvedParams.userId;
+    
     const body = await req.json();
     const { role } = body;
 
@@ -62,7 +70,7 @@ export async function PATCH(
     }
 
     const user = await db.user.update({
-      where: { id: params.userId },
+      where: { id: userId },
       data: { role },
       select: {
         id: true,
@@ -83,7 +91,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Verify admin access
@@ -92,13 +100,17 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    // Await params before using them
+    const resolvedParams = await params;
+    const userId = resolvedParams.userId;
+
     // Prevent deleting the current user
-    if (session.user.id === params.userId) {
+    if (session.user.id === userId) {
       return new NextResponse("Cannot delete your own account", { status: 400 });
     }
 
     await db.user.delete({
-      where: { id: params.userId },
+      where: { id: userId },
     });
 
     return new NextResponse(null, { status: 204 });
