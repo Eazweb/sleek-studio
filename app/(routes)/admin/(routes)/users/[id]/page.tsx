@@ -8,11 +8,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
-interface UserDetailPageProps {
-  params: {
+// Use the Next.js 15 pattern for dynamic page params
+type UserDetailPageProps = {
+  params: Promise<{
     id: string;
-  };
-}
+  }>;
+};
 
 export default async function UserDetailPage({ params }: UserDetailPageProps) {
   const { isAuthorized, errorMessage } = await requireAdmin();
@@ -29,8 +30,12 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
     ) : null;
   }
 
+  // Await params before using them
+  const resolvedParams = await params;
+  const userId = resolvedParams.id;
+
   // Fetch user data
-  const user = await getUserById(params.id);
+  const user = await getUserById(userId);
   
   if (!user) {
     notFound();
