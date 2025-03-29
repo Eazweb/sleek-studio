@@ -3,7 +3,7 @@ import { CouponClient } from "./components/client";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
 import { Metadata } from "next";
-import { DiscountType } from "@prisma/client";
+import { DiscountType, Prisma } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Coupons | Admin Dashboard",
@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 };
 
 interface CouponsPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
     search?: string;
-  };
+  }>;
 }
 
 // Type definitions for coupon data
@@ -37,23 +37,29 @@ interface CouponData {
 }
 
 const CouponsPage = async ({ searchParams }: CouponsPageProps) => {
+  // Await searchParams before using its properties
+  const params = await searchParams;
+  
   // Parse page number from query parameters (default to 1)
-  const page = parseInt(searchParams.page || "1");
-  const search = searchParams.search || "";
+  const page = parseInt(params.page || "1");
+  const search = params.search || "";
   const pageSize = 10;
 
   // Calculate pagination offsets
   const skip = (page - 1) * pageSize;
 
   // Base query conditions
-  const where = {
-    ...(search ? {
+  let where: Prisma.CouponWhereInput = {};
+  
+  // Add search condition if provided
+  if (search) {
+    where = {
       OR: [
-        { code: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } }
-      ]
-    } : {})
-  };
+        { code: { contains: search, mode: Prisma.QueryMode.insensitive } },
+        { description: { contains: search, mode: Prisma.QueryMode.insensitive } }
+      ],
+    };
+  }
 
   // Fetch coupons with pagination
   const coupons = await db.coupon.findMany({

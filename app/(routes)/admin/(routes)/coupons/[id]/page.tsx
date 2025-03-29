@@ -12,13 +12,14 @@ export const metadata: Metadata = {
   description: "View and edit coupon details",
 };
 
-interface CouponDetailPageProps {
+// Use the standard Next.js pattern for dynamic page params
+type PageProps = {
   params: {
     id: string;
   };
-}
+};
 
-const CouponDetailPage = async ({ params }: CouponDetailPageProps) => {
+const CouponDetailPage = async ({ params }: PageProps) => {
   const { id } = params;
   
   // Fetch coupon data

@@ -6,13 +6,13 @@ import { UserDataTable } from './components/user-table';
 import { fetchUsers } from '@/actions/users';
 
 interface UsersPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
     pageSize?: string;
     search?: string;
     sortBy?: string;
     sortOrder?: string;
-  }
+  }>;
 }
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
@@ -30,12 +30,15 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
     ) : null;
   }
 
+  // Await searchParams before using its properties
+  const params = await searchParams;
+
   // Parse search params
-  const page = parseInt(searchParams.page || '1');
-  const pageSize = parseInt(searchParams.pageSize || '10');
-  const search = searchParams.search || '';
-  const sortBy = searchParams.sortBy || 'createdAt';
-  const sortOrder = (searchParams.sortOrder || 'desc') as 'asc' | 'desc';
+  const page = parseInt(params.page || '1');
+  const pageSize = parseInt(params.pageSize || '10');
+  const search = params.search || '';
+  const sortBy = params.sortBy || 'createdAt';
+  const sortOrder = (params.sortOrder || 'desc') as 'asc' | 'desc';
 
   // Fetch users data using server action
   const { users, pagination } = await fetchUsers({

@@ -1,10 +1,13 @@
+// This file is needed for Next.js to recognize the configuration
+// It simply imports and uses the TypeScript configuration
+
+// @ts-check
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-  experimental: {
-    // Enable proper module resolution for path aliases
-    esmExternals: 'loose',
+  images: {
+    domains: ['www.vistaprint.com']
   },
   webpack: (config) => {
     // Ensure proper resolution for path aliases

@@ -12,8 +12,14 @@ import {
   Eye
 } from "lucide-react";
 
-import {Button} from '../../../../../../components/ui/button'
-
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -23,10 +29,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../../../../../../components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
-import { deleteCoupon, toggleCouponStatus } from "../../../../../../actions/coupons";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../../../../../../components/ui/dropdown-menu";
+import { deleteCoupon, toggleCouponStatus } from "@/actions/coupons";
 
 interface CouponActionsProps {
   couponId: string;
