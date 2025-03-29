@@ -12,15 +12,17 @@ export const metadata: Metadata = {
   description: "Update coupon settings",
 };
 
-// Use the standard Next.js pattern for dynamic page params
+// Use the Next.js 15 pattern for dynamic page params
 type PageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 const EditCouponPage = async ({ params }: PageProps) => {
-  const { id } = params;
+  // Await params before using them
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   
   // Fetch coupon data
   let coupon;
