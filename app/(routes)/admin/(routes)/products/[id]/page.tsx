@@ -13,9 +13,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 interface ProductDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export const metadata: Metadata = {
@@ -38,8 +38,11 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
     ) : null;
   }
 
+  // Resolve params
+  const resolvedParams = await params;
+  
   // Fetch product data
-  const product = await getProductById(params.id);
+  const product = await getProductById(resolvedParams.id);
   
   if (!product) {
     return notFound();

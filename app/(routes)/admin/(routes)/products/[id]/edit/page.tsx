@@ -6,9 +6,9 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 interface EditProductPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export const metadata: Metadata = {
@@ -31,8 +31,11 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     ) : null;
   }
 
+  // Resolve params
+  const resolvedParams = await params;
+  
   // Fetch product data
-  const product = await getProductById(params.id);
+  const product = await getProductById(resolvedParams.id);
   
   if (!product) {
     return notFound();
