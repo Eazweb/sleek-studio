@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Plus, Search, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CouponTable } from "./coupon-table";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface CouponClientProps {
   data: any[];

@@ -13,13 +13,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -32,6 +26,8 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { deleteCoupon, toggleCouponStatus } from "@/actions/coupons";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
 
 interface CouponActionsProps {
   couponId: string;
