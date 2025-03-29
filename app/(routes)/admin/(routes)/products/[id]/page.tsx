@@ -121,7 +121,10 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                 <div>
                   <h3 className="text-sm font-medium text-gray-500">Status</h3>
                   <p className="mt-1">
-                    <Badge variant={product.isActive ? "success" : "secondary"}>
+                    <Badge 
+                      variant={product.isActive ? "default" : "secondary"}
+                      className={product.isActive ? "bg-green-500 hover:bg-green-600" : ""}
+                    >
                       {product.isActive ? "Active" : "Inactive"}
                     </Badge>
                     {product.homePageFeatured && (
@@ -243,12 +246,14 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                             <Badge 
                               variant={
                                 item.order.status === "DELIVERED" 
-                                  ? "success" 
+                                  ? "default" 
                                   : item.order.status === "CANCELLED" 
                                     ? "destructive" 
                                     : "default"
                               }
-                              className="capitalize"
+                              className={`capitalize ${
+                                item.order.status === "DELIVERED" ? "bg-green-500 hover:bg-green-600" : ""
+                              }`}
                             >
                               {item.order.status.toLowerCase()}
                             </Badge>

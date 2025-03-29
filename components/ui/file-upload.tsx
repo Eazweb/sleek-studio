@@ -7,13 +7,13 @@ import Image from "next/image";
 
 interface FileUploadProps {
   endpoint: string;
-  value: string;
+  value?: string;
   onChange: (url: { url: string }) => void;
 }
 
 export const FileUpload = ({
   endpoint,
-  value,
+  value = "",
   onChange,
 }: FileUploadProps) => {
   const [isUploading, setIsUploading] = useState(false);

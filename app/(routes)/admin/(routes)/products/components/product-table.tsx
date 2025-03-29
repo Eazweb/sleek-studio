@@ -122,8 +122,8 @@ export const ProductTable = ({ products }: ProductTableProps) => {
               </TableCell>
               <TableCell>
                 <Badge 
-                  variant={product.isActive ? "success" : "secondary"}
-                  className="capitalize"
+                  variant={product.isActive ? "default" : "secondary"}
+                  className={product.isActive ? "bg-green-500 hover:bg-green-600" : ""}
                 >
                   {product.isActive ? "Active" : "Inactive"}
                 </Badge>
