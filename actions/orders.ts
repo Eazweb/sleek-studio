@@ -1,14 +1,14 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { auth } from "@/auth";
+import { getAuthSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
 /**
  * Get current user helper
  */
 async function currentUser() {
-  const session = await auth();
+  const session = await getAuthSession();
   return session?.user;
 }
 

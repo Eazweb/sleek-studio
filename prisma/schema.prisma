@@ -31,6 +31,7 @@ model User {
   reviews        Review[]
   wishlist       Product[] @relation(fields: [wishlistIds], references: [id])
   wishlistIds    String[]  @db.ObjectId
+  couponUsages   CouponUsage[]
 }
 
 model Account {
@@ -105,11 +106,16 @@ model Order {
   shippingAddressId String      @db.ObjectId
   paymentIntent     String?
   paymentStatus     String?
+  couponId          String?     @db.ObjectId
+  couponCode        String?     // Store the code for reference even if coupon is deleted
+  discountAmount    Float?      // Amount saved by the coupon
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 
   user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   items             OrderItem[]
+  coupon            Coupon?     @relation(fields: [couponId], references: [id])
+  couponUsage       CouponUsage?
 }
 
 model OrderItem {
@@ -153,6 +159,49 @@ model PageContent {
   updatedAt   DateTime      @updatedAt
 }
 
+model Coupon {
+  id                String          @id @default(auto()) @map("_id") @db.ObjectId
+  code              String          @unique
+  name              String
+  description       String?
+  discountType      DiscountType
+  discountValue     Float           // Percentage or fixed amount
+  minimumPurchase   Float?          // Minimum order value required
+  maximumDiscount   Float?          // Maximum discount amount (for percentage discounts)
+  isActive          Boolean         @default(true)
+  startDate         DateTime        @default(now())
+  endDate           DateTime?       // Optional end date
+  timesUsed         Int             @default(0)
+  maxUsage          Int?            // Total number of times this coupon can be used
+  maxUsagePerUser   Int?            // Max times a single user can use this coupon
+  productCategories String[]        // Categories this coupon applies to
+  applicableUserIds String[]        @db.ObjectId // Specific users who can use this coupon (if empty, all users)
+  excludedUserIds   String[]        @db.ObjectId // Users who cannot use this coupon
+  excludedProducts  String[]        @db.ObjectId // Product IDs that are excluded from the discount
+  isSingleUse       Boolean         @default(false) // If true, a user can only use once
+  isFirstTimeOnly   Boolean         @default(false) // If true, only for a user's first order
+  createdByUserId   String?         @db.ObjectId // Admin who created the coupon
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  
+  orders            Order[]
+  usages            CouponUsage[]
+}
+
+model CouponUsage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  couponId  String   @db.ObjectId
+  orderId   String   @db.ObjectId @unique
+  usedAt    DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coupon    Coupon   @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, orderId])
+}
+
 enum Role {
   USER
   ADMIN
@@ -171,4 +220,9 @@ enum ContentType {
   MEN
   WOMEN
   CHILDREN
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
 } 

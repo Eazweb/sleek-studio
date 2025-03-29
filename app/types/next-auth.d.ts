@@ -1,8 +1,8 @@
-import { DefaultSession } from "next-auth"
+import NextAuth, { DefaultSession } from "next-auth"
 import { JWT } from "next-auth/jwt"
 
 // Define the Role type locally to avoid dependency on @prisma/client
-type UserRole = "USER" | "ADMIN"
+type Role = "USER" | "ADMIN"
 
 declare module "next-auth" {
   /**
@@ -11,7 +11,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      role: UserRole;
+      role: Role;
     } & DefaultSession["user"]
   }
 
@@ -21,7 +21,7 @@ declare module "next-auth" {
    */
   interface User {
     id: string;
-    role: UserRole;
+    role: Role;
   }
 }
 
@@ -29,6 +29,6 @@ declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface JWT {
     id: string;
-    role: UserRole;
+    role: Role;
   }
 } 

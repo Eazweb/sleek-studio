@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { auth } from "@/auth";
+import { getAuthSession } from "@/lib/auth";
 import bcrypt from "bcrypt";
 
 /**
@@ -9,13 +9,13 @@ import bcrypt from "bcrypt";
  */
 export async function currentUser() {
   try {
-    const session = await auth();
+    const session = await getAuthSession();
     
     if (!session?.user?.email) {
       return null;
     }
     
-    // Get the full user data from the database using email instead of ID
+    // Get the full user data from the database using email
     const user = await db.user.findUnique({
       where: { email: session.user.email },
       select: {

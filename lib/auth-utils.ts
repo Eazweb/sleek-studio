@@ -1,6 +1,6 @@
 "use server";
 
-import { currentUser } from "@/actions";
+import { currentUser } from "@/actions/auth";
 
 interface AuthCheckResult {
   isAuthorized: boolean;

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, Geist, Geist_Mono, Open_Sans, Roboto } from "next/font/google";
 import "./globals.css";
-import AuthProvider from "@/components/auth/SessionProvider";
+import { AuthProvider } from "@/components/auth/auth-provider";
 import Navbar from "@/components/Header/Navbar";
 import { ScrollProgress } from "@/components/magicui/scroll-progress";
 import SmoothScroll from "@/lib/SmoothScroll";

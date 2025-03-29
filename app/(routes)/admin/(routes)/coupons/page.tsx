@@ -1,40 +1,111 @@
-import React from 'react'
-import { requireAdmin } from '@/lib/auth-utils'
-import OopsMessage from '@/components/Others/OopsMessage'
+import { Heading } from "@/components/ui/heading";
+import { CouponClient } from "./components/client";
+import { db } from "@/lib/db";
+import { format } from "date-fns";
+import { Metadata } from "next";
+import { DiscountType } from "@prisma/client";
 
- const page = async ()=>{
-  const { isAuthorized, user, errorMessage } = await requireAdmin();
-  
-  // If not authorized, show the OopsMessage
-  if (!isAuthorized) {
-    return errorMessage ? (
-      <OopsMessage 
-        message={errorMessage.message}
-        title={errorMessage.title}
-        backUrl={errorMessage.backUrl}
-        backText={errorMessage.backText}
-      />
-    ) : null;
-  }
-  
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Coupons Management</h1>
-      <div className="bg-slate-100 p-4 rounded-lg mb-6">
-        <h2 className="text-lg font-semibold mb-2">Admin Info</h2>
-        <p>User ID: {user.id}</p>
-        <p>Email: {user.email}</p>
-        <p>Role: {user.role}</p>
-        <p>Name: {user.name || 'Not set'}</p>
-      </div>
-      
-      {/* Coupon management interface will go here */}
-      <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-4">All Coupons</h2>
-        <p>Coupon management functionality coming soon...</p>
-      </div>
-    </div>
-  )
+export const metadata: Metadata = {
+  title: "Coupons | Admin Dashboard",
+  description: "Manage discount coupons for your store",
+};
+
+interface CouponsPageProps {
+  searchParams: {
+    page?: string;
+    search?: string;
+  };
 }
 
-export default page
+// Type definitions for coupon data
+interface CouponData {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  discountType: DiscountType;
+  discountValue: number;
+  isActive: boolean;
+  minimumPurchase: number | null;
+  maximumDiscount: number | null;
+  timesUsed: number;
+  maxUsage: number | null;
+  startDate: Date;
+  endDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const CouponsPage = async ({ searchParams }: CouponsPageProps) => {
+  // Parse page number from query parameters (default to 1)
+  const page = parseInt(searchParams.page || "1");
+  const search = searchParams.search || "";
+  const pageSize = 10;
+
+  // Calculate pagination offsets
+  const skip = (page - 1) * pageSize;
+
+  // Base query conditions
+  const where = {
+    ...(search ? {
+      OR: [
+        { code: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } }
+      ]
+    } : {})
+  };
+
+  // Fetch coupons with pagination
+  const coupons = await db.coupon.findMany({
+    where,
+    orderBy: {
+      createdAt: "desc"
+    },
+    skip,
+    take: pageSize,
+  });
+
+  // Get total count for pagination
+  const totalCoupons = await db.coupon.count({ where });
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalCoupons / pageSize);
+
+  // Format dates and prepare data for client
+  const formattedCoupons = coupons.map((coupon: CouponData) => ({
+    id: coupon.id,
+    code: coupon.code,
+    type: coupon.discountType,
+    value: coupon.discountValue,
+    description: coupon.description || "",
+    isActive: coupon.isActive,
+    minOrderAmount: coupon.minimumPurchase,
+    maxUsageCount: coupon.maxUsage,
+    usageCount: coupon.timesUsed,
+    validUntil: coupon.endDate,
+    createdAt: format(coupon.createdAt, "MMMM do, yyyy"),
+  }));
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <Heading
+          title={`Coupons (${totalCoupons})`}
+          description="Manage discount coupons for your store"
+        />
+        
+        <CouponClient 
+          data={formattedCoupons} 
+          pagination={{
+            page,
+            pageSize,
+            totalCoupons,
+            totalPages
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default CouponsPage;

@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 export default function SignIn() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams?.get("callbackUrl") || "/";
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -22,23 +25,24 @@ export default function SignIn() {
         email,
         password,
         redirect: false,
+        callbackUrl,
       });
 
       if (result?.error) {
-        setError(result.error);
+        setError(result.error === "CredentialsSignin" 
+          ? "Invalid email or password" 
+          : result.error);
+        setIsLoading(false);
+      } else if (result?.url) {
+        router.push(result.url);
       } else {
-        router.push("/");
-        router.refresh();
+        router.push(callbackUrl);
       }
     } catch (error) {
-      setError("Something went wrong. Please try again.");
-    } finally {
+      console.error("Sign in error:", error);
+      setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
-  };
-
-  const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -98,32 +102,6 @@ export default function SignIn() {
             </button>
           </div>
         </form>
-
-        <div className="relative mt-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 text-gray-500 bg-white">Or continue with</span>
-          </div>
-        </div>
-
-        <div>
-          <button
-            onClick={handleGoogleSignIn}
-            className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            <div className="flex items-center justify-center">
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                <path
-                  d="M12.545 10.239v3.821h5.445c-0.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866 0.549 3.921 1.453l2.814-2.814c-1.79-1.677-4.184-2.702-6.735-2.702-5.514 0-9.99 4.476-9.99 9.99s4.476 9.99 9.99 9.99c8.499 0 10.497-7.886 9.689-11.647h-9.689z"
-                  fill="#4285F4"
-                />
-              </svg>
-              Continue with Google
-            </div>
-          </button>
-        </div>
 
         <p className="mt-4 text-center text-sm text-gray-600">
           Don't have an account?{" "}

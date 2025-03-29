@@ -1,35 +1,36 @@
-import { type NextAuthOptions } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { db } from "@/lib/db";
-import { User } from "@prisma/client";
 
-const authConfig: NextAuthOptions = {
+const prisma = new PrismaClient();
+
+// Parse the allowed redirect URLs
+const redirectUrls = process.env.NEXTAUTH_REDIRECT_URLS
+  ? process.env.NEXTAUTH_REDIRECT_URLS.split(",")
+  : [];
+
+export const authConfig: NextAuthOptions = {
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    }),
-    Credentials({
+    CredentialsProvider({
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error("Invalid credentials");
         }
 
-        const user = await db.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email,
-          },
+            email: credentials.email
+          }
         });
 
         if (!user || !user.hashedPassword) {
-          return null;
+          throw new Error("User not found");
         }
 
         const isPasswordValid = await bcrypt.compare(
@@ -38,33 +39,45 @@ const authConfig: NextAuthOptions = {
         );
 
         if (!isPasswordValid) {
-          return null;
+          throw new Error("Invalid password");
         }
 
         return user;
-      },
-    }),
+      }
+    })
   ],
   pages: {
     signIn: "/auth/signin",
-    error: "/auth/error",
+  },
+  session: {
+    strategy: "jwt"
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
         token.role = user.role;
+        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) {
-        session.user.id = token.id;
+      if (session.user) {
         session.user.role = token.role;
+        session.user.id = token.id;
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Check if the redirect URL is one of our allowed domains
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      } else if (redirectUrls.some(allowedUrl => url.startsWith(allowedUrl))) {
+        return url;
+      }
+      return baseUrl;
+    },
   },
+  debug: process.env.NODE_ENV !== "production",
 };
 
 export default authConfig; 

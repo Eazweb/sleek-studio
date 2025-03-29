@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, User, ShoppingBag, LogIn, UserPlus } from "lucide-react"
+import { LogOut, User, ShoppingBag, LogIn, UserPlus, LayoutDashboard } from "lucide-react"
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
@@ -19,6 +19,7 @@ export default function UserMenu() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const isAuthenticated = status === "authenticated";
+  const isAdmin = session?.user?.role === "ADMIN";
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/" });
@@ -36,6 +37,12 @@ export default function UserMenu() {
           <>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            {isAdmin && (
+              <DropdownMenuItem onClick={() => router.push("/admin")}>
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                <span>Admin Dashboard</span>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem onClick={() => router.push("/profile")}>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>

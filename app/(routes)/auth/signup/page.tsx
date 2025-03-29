@@ -19,6 +19,7 @@ export default function SignUp() {
     setError("");
 
     try {
+      console.log("Starting registration process...");
       // Make API call to register user
       const response = await fetch("/api/register", {
         method: "POST",
@@ -33,29 +34,34 @@ export default function SignUp() {
       });
 
       const data = await response.json();
+      console.log("Registration API response:", { status: response.status, data });
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to register");
       }
 
+      console.log("Registration successful, attempting to sign in...");
       // Sign in the user after successful registration
-      await signIn("credentials", {
+      const signInResult = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
 
+      console.log("Sign in result:", signInResult);
+
+      if (signInResult?.error) {
+        throw new Error(`Sign in failed after registration: ${signInResult.error}`);
+      }
+
       router.push("/");
       router.refresh();
     } catch (error: any) {
+      console.error("Registration/sign-in error:", error);
       setError(error.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -131,32 +137,6 @@ export default function SignUp() {
             </button>
           </div>
         </form>
-
-        <div className="relative mt-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 text-gray-500 bg-white">Or continue with</span>
-          </div>
-        </div>
-
-        <div>
-          <button
-            onClick={handleGoogleSignIn}
-            className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            <div className="flex items-center justify-center">
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                <path
-                  d="M12.545 10.239v3.821h5.445c-0.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866 0.549 3.921 1.453l2.814-2.814c-1.79-1.677-4.184-2.702-6.735-2.702-5.514 0-9.99 4.476-9.99 9.99s4.476 9.99 9.99 9.99c8.499 0 10.497-7.886 9.689-11.647h-9.689z"
-                  fill="#4285F4"
-                />
-              </svg>
-              Continue with Google
-            </div>
-          </button>
-        </div>
 
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}

@@ -1,10 +1,22 @@
 import OopsMessage from '@/components/Others/OopsMessage';
 import { requireAdmin } from '@/lib/auth-utils';
 import React from 'react'
+import { columns } from './columns';
+import { UserDataTable } from './components/user-table';
+import { fetchUsers } from '@/actions/users';
 
- const page = async () => {
+interface UsersPageProps {
+  searchParams: {
+    page?: string;
+    pageSize?: string;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+}
 
-  const { isAuthorized, user, errorMessage } = await requireAdmin();
+export default async function UsersPage({ searchParams }: UsersPageProps) {
+  const { isAuthorized, errorMessage } = await requireAdmin();
   
   // If not authorized, show the OopsMessage
   if (!isAuthorized) {
@@ -17,9 +29,41 @@ import React from 'react'
       />
     ) : null;
   }
+
+  // Parse search params
+  const page = parseInt(searchParams.page || '1');
+  const pageSize = parseInt(searchParams.pageSize || '10');
+  const search = searchParams.search || '';
+  const sortBy = searchParams.sortBy || 'createdAt';
+  const sortOrder = (searchParams.sortOrder || 'desc') as 'asc' | 'desc';
+
+  // Fetch users data using server action
+  const { users, pagination } = await fetchUsers({
+    page,
+    pageSize,
+    search,
+    sortBy,
+    sortOrder
+  });
+  
   return (
-    <div></div>
+    <div className="p-6">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold mb-2">Users Management</h1>
+        <p className="text-muted-foreground">
+          View and manage all users in the system.
+        </p>
+      </div>
+      
+      <div className="bg-white rounded-lg shadow">
+        <UserDataTable
+          columns={columns}
+          data={users}
+          currentPage={pagination.page}
+          pageSize={pagination.pageSize}
+          totalPages={pagination.totalPages}
+        />
+      </div>
+    </div>
   )
 }
-
-export default page
