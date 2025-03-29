@@ -36,7 +36,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { createCoupon, updateCoupon } from "../../../../../../actions/coupons";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../../../../lib/utils";
 
 // Form validation schema
 const formSchema = z.object({
