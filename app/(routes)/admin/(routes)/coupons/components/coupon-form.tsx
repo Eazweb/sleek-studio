@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../../../components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,26 +16,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+} from "../../../../../../components/ui/form";
+import { Input } from "../../../../../../components/ui/input";
+import { Textarea } from "../../../../../../components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Calendar } from "@/components/ui/calendar";
+} from "../../../../../../components/ui/select";
+import { Switch } from "../../../../../../components/ui/switch";
+import { Calendar } from "../../../../../../components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "../../../../../../components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { createCoupon, updateCoupon } from "@/actions/coupons";
+import { createCoupon, updateCoupon } from "../../../../../../actions/coupons";
 import { cn } from "@/lib/utils";
 
 // Form validation schema

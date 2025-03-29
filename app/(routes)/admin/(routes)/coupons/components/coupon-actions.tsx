@@ -25,8 +25,8 @@ import {
   AlertDialogTitle,
 } from "../../../../../../components/ui/alert-dialog";
 
-import { deleteCoupon, toggleCouponStatus } from "@/actions/coupons";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { deleteCoupon, toggleCouponStatus } from "../../../../../../actions/coupons";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../../../../../../components/ui/dropdown-menu";
 
 interface CouponActionsProps {
   couponId: string;

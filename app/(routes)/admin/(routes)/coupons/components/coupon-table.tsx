@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../../../components/ui/button";
 import { 
   Table, 
   TableBody, 
@@ -10,8 +10,8 @@ import {
   TableHead, 
   TableHeader, 
   TableRow 
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from "../../../../../../components/ui/table";
+import { Badge } from "../../../../../../components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CouponActions } from "./coupon-actions";
 
