@@ -12,7 +12,7 @@ import {
   Eye
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import {Button} from '../../../../../../components/ui/button'
 
 import { 
   AlertDialog,
@@ -23,11 +23,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "../../../../../../components/ui/alert-dialog";
 
 import { deleteCoupon, toggleCouponStatus } from "@/actions/coupons";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface CouponActionsProps {
   couponId: string;
