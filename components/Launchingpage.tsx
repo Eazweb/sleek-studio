@@ -27,7 +27,7 @@ export default function LaunchingSoonPage() {
           <h1
             className={`${playfairDisplay.className} text-5xl md:text-7xl font-bold text-white text-center mb-6 leading-tight max-w-4xl`}
           >
-            We Are Almost Ready to Launch!
+            We will be back soon!
           </h1>
         </div>
 
